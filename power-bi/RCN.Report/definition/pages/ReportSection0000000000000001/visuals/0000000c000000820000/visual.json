@@ -1,0 +1,519 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "0000000c000000820000",
+  "position": {
+    "x": 12,
+    "y": 230,
+    "z": 5000,
+    "height": 477,
+    "width": 1256,
+    "tabOrder": 142
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Objects"
+                    }
+                  },
+                  "Property": "Address"
+                }
+              },
+              "queryRef": "Objects.Address",
+              "nativeQueryRef": "Address",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Objects"
+                    }
+                  },
+                  "Property": "Document date (source)"
+                }
+              },
+              "queryRef": "Objects.Document date (source)",
+              "nativeQueryRef": "Document date (source)",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Objects"
+                    }
+                  },
+                  "Property": "Object type"
+                }
+              },
+              "queryRef": "Objects.Object type",
+              "nativeQueryRef": "Object type",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Objects"
+                    }
+                  },
+                  "Property": "Property type"
+                }
+              },
+              "queryRef": "Objects.Property type",
+              "nativeQueryRef": "Property type",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Objects"
+                    }
+                  },
+                  "Property": "Building use"
+                }
+              },
+              "queryRef": "Objects.Building use",
+              "nativeQueryRef": "Building use",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Objects"
+                    }
+                  },
+                  "Property": "Usable floor area (m²)"
+                }
+              },
+              "queryRef": "Objects.Usable floor area (m²)",
+              "nativeQueryRef": "Usable floor area (m²)",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Objects"
+                    }
+                  },
+                  "Property": "Transaction price (PLN)"
+                }
+              },
+              "queryRef": "Objects.Transaction price (PLN)",
+              "nativeQueryRef": "Transaction price (PLN)",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Objects"
+                    }
+                  },
+                  "Property": "Transaction ID"
+                }
+              },
+              "queryRef": "Objects.Transaction ID",
+              "nativeQueryRef": "Transaction ID",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Objects"
+                    }
+                  },
+                  "Property": "Object ID"
+                }
+              },
+              "queryRef": "Objects.Object ID",
+              "nativeQueryRef": "Object ID",
+              "active": true
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "columnHeaders": [
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
+                }
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#102F46'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "11D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "values": [
+        {
+          "properties": {
+            "fontColorPrimary": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#123047'"
+                    }
+                  }
+                }
+              }
+            },
+            "backColorPrimary": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontColorSecondary": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#123047'"
+                    }
+                  }
+                }
+              }
+            },
+            "backColorSecondary": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#E8F4F4'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "11D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "grid": [
+        {
+          "properties": {
+            "rowPadding": {
+              "expr": {
+                "Literal": {
+                  "Value": "5D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#D9E5EB'"
+                    }
+                  }
+                }
+              }
+            },
+            "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Buildings, land parcels and units'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#102F46'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'left'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "d7d6ed3155317ee8ca67",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Objects"
+              }
+            },
+            "Property": "Address"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "7cb6b2e9d0f63f974104",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Objects"
+              }
+            },
+            "Property": "Document date (source)"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "4e2fdbccb702cdaf3601",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Objects"
+              }
+            },
+            "Property": "Object type"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "8459f16facbc7673a158",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Objects"
+              }
+            },
+            "Property": "Property type"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "493bd270b78c8db693ad",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Objects"
+              }
+            },
+            "Property": "Building use"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "84aac694def4d29947f7",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Objects"
+              }
+            },
+            "Property": "Usable floor area (m²)"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "d5925e3c2b01de55e6f3",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Objects"
+              }
+            },
+            "Property": "Transaction price (PLN)"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "59218f7af6044f3a788d",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Objects"
+              }
+            },
+            "Property": "Transaction ID"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "0425faeea2982a157bd9",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Objects"
+              }
+            },
+            "Property": "Object ID"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
+  }
+}

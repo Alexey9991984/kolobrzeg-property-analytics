@@ -1,0 +1,481 @@
+{
+  "compatibilityLevel": 1600,
+  "model": {
+    "culture": "en-US",
+    "defaultPowerBIDataSourceVersion": "powerBI_V3",
+    "tables": [
+      {
+        "name": "Transactions",
+        "columns": [
+          {
+            "name": "Transaction ID",
+            "dataType": "string",
+            "sourceColumn": "ID сделки",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Document date",
+            "dataType": "dateTime",
+            "sourceColumn": "Дата документа",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Year",
+            "dataType": "int64",
+            "sourceColumn": "Год",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Address",
+            "dataType": "string",
+            "sourceColumn": "Адрес",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Locality",
+            "dataType": "string",
+            "sourceColumn": "Населённый пункт",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Market",
+            "dataType": "string",
+            "sourceColumn": "Рынок",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Sale type",
+            "dataType": "string",
+            "sourceColumn": "Вид сделки",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Transaction price (PLN)",
+            "dataType": "double",
+            "sourceColumn": "Цена сделки, PLN",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Object count",
+            "dataType": "int64",
+            "sourceColumn": "Объектов",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "House candidate (100–150 m²)",
+            "dataType": "string",
+            "sourceColumn": "Кандидат 100–150 м²",
+            "summarizeBy": "none"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Сделки",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = PostgreSQL.Database(\"localhost:5432\", \"kolobrzeg_property_analytics_v2\"),",
+                "    Rows = Source{[Schema=\"rcn\", Item=\"report_transactions\"]}[Data],",
+                "    Columns = Table.SelectColumns(Rows, {\"ID сделки\",\"Дата документа\",\"Год\",\"Адрес\",\"Населённый пункт\",\"Рынок\",\"Вид сделки\",\"Цена сделки, PLN\",\"Объектов\",\"Кандидат 100–150 м²\"}),",
+                "    Labels = [#\"rynek wtórny\" = \"Secondary market\", #\"rynek pierwotny\" = \"Primary market\", #\"wolny rynek\" = \"Open-market sale\", #\"sprzedaż z bonifikatą\" = \"Discounted sale\", #\"sprzedaż przetargowa\" = \"Tender sale\", #\"sprzedaż bezprzetargowa\" = \"Non-tender sale\", #\"sprzedaż w postępowaniu egzekucyjnym\" = \"Enforcement sale\", #\"sprzedaż na cel publiczny\" = \"Sale for public use\", #\"brak danych\" = \"Not recorded\", #\"nie dotyczy\" = \"Not applicable\", #\"Budynki\" = \"Buildings\", #\"Działki\" = \"Land parcels\", #\"Lokale\" = \"Units\", #\"mieszkalny\" = \"Residential\", #\"mieszkalna\" = \"Residential\", #\"niemieszkalna\" = \"Non-residential\", #\"pozostaleNiemieszkalne\" = \"Other non-residential\", #\"handlowoUslugowy\" = \"Retail and services\", #\"transportuILacznosci\" = \"Transport and communications\", #\"szpitale\" = \"Hospitals\", #\"gospodarczy\" = \"Utility building\", #\"przemyslowy\" = \"Industrial\", #\"biurowy\" = \"Office\", #\"zbiornikiSilosyMagazyny\" = \"Tanks, silos and warehouses\", #\"nieruchomość lokalowa\" = \"Unit property\", #\"nieruchomość gruntowa zabudowana\" = \"Developed land\", #\"nieruchomość gruntowa niezabudowana\" = \"Undeveloped land\", #\"nieruchomość budynkowa\" = \"Building property\", #\"osoba fizyczna\" = \"Individual\", #\"osoba prawna\" = \"Legal entity\", #\"własność nieruchomości gruntowej\" = \"Freehold land ownership\", #\"własność lokalu z prawem związanym\" = \"Unit ownership with associated right\", #\"własność budynku z prawem związanym\" = \"Building ownership with associated right\", #\"użytkowanie wieczyste\" = \"Perpetual usufruct\", #\"Да\" = \"Yes\", #\"Нет\" = \"No\"],",
+                "    Translate = (value as nullable text) as nullable text => if value = null then null else Record.FieldOrDefault(Labels, value, value),",
+                "    English = Table.TransformColumns(Columns, {{\"Рынок\", Translate, type nullable text}, {\"Вид сделки\", Translate, type nullable text}, {\"Кандидат 100–150 м²\", Translate, type nullable text}})",
+                "in English"
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Transaction count",
+            "expression": "COUNTROWS('Transactions')",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Median transaction price",
+            "expression": "MEDIAN('Transactions'[Transaction price (PLN)])",
+            "formatString": "#,0 \"zł\""
+          }
+        ]
+      },
+      {
+        "name": "Objects",
+        "columns": [
+          {
+            "name": "Transaction reference",
+            "dataType": "string",
+            "sourceColumn": "tran_oznaczenie_trans",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Transaction ID",
+            "dataType": "string",
+            "sourceColumn": "tran_lokalny_id_iip",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Sale type",
+            "dataType": "string",
+            "sourceColumn": "tran_rodzaj_trans",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Market",
+            "dataType": "string",
+            "sourceColumn": "tran_rodzaj_rynku",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Seller type",
+            "dataType": "string",
+            "sourceColumn": "tran_sprzedajacy",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Buyer type",
+            "dataType": "string",
+            "sourceColumn": "tran_kupujacy",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Gross transaction price (source)",
+            "dataType": "string",
+            "sourceColumn": "tran_cena_brutto",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Transaction VAT",
+            "dataType": "string",
+            "sourceColumn": "tran_vat",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Document reference",
+            "dataType": "string",
+            "sourceColumn": "dok_oznaczenie",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Document date (source)",
+            "dataType": "string",
+            "sourceColumn": "dok_data",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Document issuer",
+            "dataType": "string",
+            "sourceColumn": "dok_tworca",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Property ID",
+            "dataType": "string",
+            "sourceColumn": "nier_id_nieruchomosci",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Property type",
+            "dataType": "string",
+            "sourceColumn": "nier_rodzaj",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Property right",
+            "dataType": "string",
+            "sourceColumn": "nier_prawo",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Ownership share",
+            "dataType": "string",
+            "sourceColumn": "nier_udzial",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Land area (source)",
+            "dataType": "string",
+            "sourceColumn": "nier_pow_gruntu",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Property description",
+            "dataType": "string",
+            "sourceColumn": "nier_opis",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Gross property price",
+            "dataType": "string",
+            "sourceColumn": "nier_cena_brutto",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Property VAT",
+            "dataType": "string",
+            "sourceColumn": "nier_vat",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Object type",
+            "dataType": "string",
+            "sourceColumn": "typ_przedmiotu",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Object ID",
+            "dataType": "string",
+            "sourceColumn": "id_przedmiotu",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Address",
+            "dataType": "string",
+            "sourceColumn": "adres",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Gross object price",
+            "dataType": "string",
+            "sourceColumn": "cena_brutto",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Object VAT",
+            "dataType": "string",
+            "sourceColumn": "vat",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Additional information",
+            "dataType": "string",
+            "sourceColumn": "dodatkowe_informacje",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Registered parcel area",
+            "dataType": "string",
+            "sourceColumn": "dzi_pow_ewid",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Land use",
+            "dataType": "string",
+            "sourceColumn": "dzi_sposob_uzyt",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Local plan designation",
+            "dataType": "string",
+            "sourceColumn": "dzi_przezn_wmpzp",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Building use",
+            "dataType": "string",
+            "sourceColumn": "bud_rodzaj",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Building floor area (source)",
+            "dataType": "string",
+            "sourceColumn": "bud_pow_uzyt",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Room count",
+            "dataType": "string",
+            "sourceColumn": "lok_liczba_izb",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Floor number",
+            "dataType": "string",
+            "sourceColumn": "lok_nr_kond",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Unit floor area",
+            "dataType": "string",
+            "sourceColumn": "lok_pow_uzyt",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Ancillary room area",
+            "dataType": "string",
+            "sourceColumn": "lok_pow_pom_przynal",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Unit use",
+            "dataType": "string",
+            "sourceColumn": "lok_funkcja",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Year",
+            "dataType": "int64",
+            "sourceColumn": "Год",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Locality",
+            "dataType": "string",
+            "sourceColumn": "Населённый пункт",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Usable floor area (m²)",
+            "dataType": "double",
+            "sourceColumn": "Полезная площадь, м²",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Transaction price (PLN)",
+            "dataType": "double",
+            "sourceColumn": "Цена сделки, PLN",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "House candidate (100–150 m²)",
+            "dataType": "string",
+            "sourceColumn": "Кандидат 100–150 м²",
+            "summarizeBy": "none"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Объекты",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = PostgreSQL.Database(\"localhost:5432\", \"kolobrzeg_property_analytics_v2\"),",
+                "    Rows = Source{[Schema=\"rcn\", Item=\"report_objects\"]}[Data],",
+                "    Columns = Table.SelectColumns(Rows, {\"tran_oznaczenie_trans\",\"tran_lokalny_id_iip\",\"tran_rodzaj_trans\",\"tran_rodzaj_rynku\",\"tran_sprzedajacy\",\"tran_kupujacy\",\"tran_cena_brutto\",\"tran_vat\",\"dok_oznaczenie\",\"dok_data\",\"dok_tworca\",\"nier_id_nieruchomosci\",\"nier_rodzaj\",\"nier_prawo\",\"nier_udzial\",\"nier_pow_gruntu\",\"nier_opis\",\"nier_cena_brutto\",\"nier_vat\",\"typ_przedmiotu\",\"id_przedmiotu\",\"adres\",\"cena_brutto\",\"vat\",\"dodatkowe_informacje\",\"dzi_pow_ewid\",\"dzi_sposob_uzyt\",\"dzi_przezn_wmpzp\",\"bud_rodzaj\",\"bud_pow_uzyt\",\"lok_liczba_izb\",\"lok_nr_kond\",\"lok_pow_uzyt\",\"lok_pow_pom_przynal\",\"lok_funkcja\",\"Год\",\"Населённый пункт\",\"Полезная площадь, м²\",\"Цена сделки, PLN\",\"Кандидат 100–150 м²\"}),",
+                "    Labels = [#\"rynek wtórny\" = \"Secondary market\", #\"rynek pierwotny\" = \"Primary market\", #\"wolny rynek\" = \"Open-market sale\", #\"sprzedaż z bonifikatą\" = \"Discounted sale\", #\"sprzedaż przetargowa\" = \"Tender sale\", #\"sprzedaż bezprzetargowa\" = \"Non-tender sale\", #\"sprzedaż w postępowaniu egzekucyjnym\" = \"Enforcement sale\", #\"sprzedaż na cel publiczny\" = \"Sale for public use\", #\"brak danych\" = \"Not recorded\", #\"nie dotyczy\" = \"Not applicable\", #\"Budynki\" = \"Buildings\", #\"Działki\" = \"Land parcels\", #\"Lokale\" = \"Units\", #\"mieszkalny\" = \"Residential\", #\"mieszkalna\" = \"Residential\", #\"niemieszkalna\" = \"Non-residential\", #\"pozostaleNiemieszkalne\" = \"Other non-residential\", #\"handlowoUslugowy\" = \"Retail and services\", #\"transportuILacznosci\" = \"Transport and communications\", #\"szpitale\" = \"Hospitals\", #\"gospodarczy\" = \"Utility building\", #\"przemyslowy\" = \"Industrial\", #\"biurowy\" = \"Office\", #\"zbiornikiSilosyMagazyny\" = \"Tanks, silos and warehouses\", #\"nieruchomość lokalowa\" = \"Unit property\", #\"nieruchomość gruntowa zabudowana\" = \"Developed land\", #\"nieruchomość gruntowa niezabudowana\" = \"Undeveloped land\", #\"nieruchomość budynkowa\" = \"Building property\", #\"osoba fizyczna\" = \"Individual\", #\"osoba prawna\" = \"Legal entity\", #\"własność nieruchomości gruntowej\" = \"Freehold land ownership\", #\"własność lokalu z prawem związanym\" = \"Unit ownership with associated right\", #\"własność budynku z prawem związanym\" = \"Building ownership with associated right\", #\"użytkowanie wieczyste\" = \"Perpetual usufruct\", #\"Да\" = \"Yes\", #\"Нет\" = \"No\"],",
+                "    Translate = (value as nullable text) as nullable text => if value = null then null else Record.FieldOrDefault(Labels, value, value),",
+                "    English = Table.TransformColumns(Columns, {{\"tran_rodzaj_trans\", Translate, type nullable text}, {\"tran_rodzaj_rynku\", Translate, type nullable text}, {\"tran_sprzedajacy\", Translate, type nullable text}, {\"tran_kupujacy\", Translate, type nullable text}, {\"nier_rodzaj\", Translate, type nullable text}, {\"nier_prawo\", Translate, type nullable text}, {\"typ_przedmiotu\", Translate, type nullable text}, {\"bud_rodzaj\", Translate, type nullable text}, {\"lok_funkcja\", Translate, type nullable text}, {\"Кандидат 100–150 м²\", Translate, type nullable text}})",
+                "in English"
+              ]
+            }
+          }
+        ],
+        "measures": []
+      },
+      {
+        "name": "House Sales",
+        "columns": [
+          {
+            "name": "Transaction ID",
+            "dataType": "string",
+            "sourceColumn": "Transaction ID",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Document date",
+            "dataType": "dateTime",
+            "sourceColumn": "Document date",
+            "summarizeBy": "none",
+            "formatString": "yyyy-MM-dd"
+          },
+          {
+            "name": "Year",
+            "dataType": "int64",
+            "sourceColumn": "Year",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Address",
+            "dataType": "string",
+            "sourceColumn": "Address",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Locality",
+            "dataType": "string",
+            "sourceColumn": "Locality",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Sale price (PLN)",
+            "dataType": "double",
+            "sourceColumn": "Sale price (PLN)",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Land area (m²)",
+            "dataType": "double",
+            "sourceColumn": "Land area (m²)",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "House floor area (m²)",
+            "dataType": "double",
+            "sourceColumn": "House floor area (m²)",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Land size band",
+            "dataType": "string",
+            "sourceColumn": "Land size band",
+            "summarizeBy": "none"
+          }
+        ],
+        "measures": [
+          {
+            "name": "House sales",
+            "expression": "COUNTROWS('House Sales')",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Median sale price",
+            "expression": "MEDIANX(FILTER('House Sales', 'House Sales'[Sale price (PLN)] > 0), 'House Sales'[Sale price (PLN)])",
+            "formatString": "#,0 \"PLN\""
+          },
+          {
+            "name": "Sales with recorded floor area",
+            "expression": "COUNT('House Sales'[House floor area (m²)])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Floor area coverage",
+            "expression": "DIVIDE([Sales with recorded floor area], [House sales])",
+            "formatString": "0.0%"
+          },
+          {
+            "name": "Sales with 100–150 m²",
+            "expression": "COALESCE(CALCULATE([House sales], 'House Sales'[House floor area (m²)] >= 100, 'House Sales'[House floor area (m²)] <= 150),0)",
+            "formatString": "#,0"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "House Sales",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "  Source = PostgreSQL.Database(\"localhost:5432\", \"kolobrzeg_property_analytics_v2\", [Query=\"with eligible as (  select tran_lokalny_id_iip  from rcn.report_objects  group by tran_lokalny_id_iip  having count(*) filter (where typ_przedmiotu='Budynki')=1     and count(*) filter (where typ_przedmiotu='Działki')>=1     and bool_and(typ_przedmiotu in ('Budynki','Działki') and nier_rodzaj='nieruchomość gruntowa zabudowana' and nier_udzial='1/1') ), houses as (  select o.tran_lokalny_id_iip as \"\"Transaction ID\"\", o.document_date as \"\"Document date\"\",         o.\"\"Год\"\" as \"\"Year\"\", nullif(o.adres,'brak danych') as \"\"Address\"\",         coalesce(o.locality,'Not recorded') as \"\"Locality\"\", o.price as \"\"Sale price (PLN)\"\",         case when replace(o.nier_pow_gruntu,',','.') ~ '^[0-9]+([.][0-9]+)?$'              then nullif(replace(o.nier_pow_gruntu,',','.')::float8,0) end as \"\"Land area (m²)\"\",         case when o.area>0 then o.area end as \"\"House floor area (m²)\"\"  from rcn.report_objects o join eligible e using (tran_lokalny_id_iip)  where o.typ_przedmiotu='Budynki' and o.bud_rodzaj='mieszkalny'    and o.nier_prawo='własność nieruchomości gruntowej'    and o.tran_rodzaj_trans='wolny rynek' and o.tran_rodzaj_rynku='rynek wtórny' ) select *, case when \"\"Land area (m²)\"\" is null then 'Not recorded'  when \"\"Land area (m²)\"\"<500 then '<500 m²'  when \"\"Land area (m²)\"\"<1000 then '500–999 m²'  when \"\"Land area (m²)\"\"<1500 then '1,000–1,499 m²'  else '1,500+ m²' end as \"\"Land size band\"\" from houses\"]),",
+                "  Typed = Table.TransformColumnTypes(Source, {{\"Document date\", type date}})",
+                "in Typed"
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "TransactionObjects",
+        "fromTable": "Objects",
+        "fromColumn": "Transaction ID",
+        "toTable": "Transactions",
+        "toColumn": "Transaction ID"
+      }
+    ]
+  }
+}
