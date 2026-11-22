@@ -1,0 +1,1 @@
+# kolobrzeg-property-analytics
