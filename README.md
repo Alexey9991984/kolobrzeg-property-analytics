@@ -8,6 +8,22 @@ An English-language Power BI report for exploring recorded real-estate transacti
 - **Objects** shows the buildings, land parcels and units associated with transactions.
 - **House Sales** focuses on open-market secondary sales of one residential building with land and full ownership. It shows sale counts, median total prices, land-size bands and building floor-area coverage.
 
+## Dashboard preview
+
+Examples from Power BI Desktop. Active filters are shown in each image.
+
+### Transactions
+
+![Transactions dashboard with deal counts and median prices by year](screenshots/transactions.png)
+
+### Objects
+
+![Object register for buildings, land parcels, and units](screenshots/objects.png)
+
+### House Sales
+
+![House sales dashboard with price and floor-area indicators](screenshots/house-sales.png)
+
 ## Run locally
 
 Requirements are PostgreSQL, Python and Power BI Desktop on Windows.
